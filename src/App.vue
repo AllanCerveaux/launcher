@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  import NavBar from '@/views/NavBar.vue'
-  import Menu from '@/views/Menu.vue'
+  import NavBar from '@/components/NavBar.vue'
+  import Menu from '@/components/Menu.vue'
 
   export default {
     name: 'app',
