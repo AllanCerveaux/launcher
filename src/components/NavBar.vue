@@ -1,16 +1,23 @@
 <template>
 	<section class="navbar">
-		<nav >
+		<nav>
 			<div class="navbar-left">
 				<img class="navbar-brand" src="https://picsum.photos/50" alt="">
-				<router-link class="item" to="/game">GAMES<hr/></router-link>
-				<router-link class="item" to="/news">NEWS <hr/></router-link>
-				<router-link class="item" to="/chat">CHAT <hr/></router-link>
+				<div v-if="isAuthenticated" class="navbar-items">
+					<router-link class="item" to="/game">GAMES<hr/></router-link>
+					<router-link class="item" to="/news">NEWS <hr/></router-link>
+					<router-link class="item" to="/chat">CHAT <hr/></router-link>
+				</div>
 			</div>
 			<div class="navbar-right">
-				<div class="user">
+				<div v-if="isAuthenticated" class="user">
 					<span class="username">Callan</span>
 					<img src="https://picsum.photos/35" alt="">
+					<button @click="logout">logout</button>
+				</div>
+				<div v-else class="option">
+					<a href="#">Settings</a>
+					<a href="#">Report bug</a>
 				</div>
 			</div>
 		</nav>
@@ -18,9 +25,20 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
+	import { AUTH_LOGOUT } from '@/store/actions/auth'
+
 	export default {
-		data(){
-			return {}
+		methods: {
+			logout(){ 
+				return this.$store.dispatch(AUTH_LOGOUT)
+					.then(() => this.$router.push('/login'))
+			}
+		},
+		computed: {
+			...mapGetters([
+        'isAuthenticated'
+      ])
 		}
 	}
 </script>
@@ -31,12 +49,17 @@ nav {
 	width: 100%;
 	.navbar-left{
 		display: flex;
-		flex-wrap: wrap;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items:center;
-		width: 30%;
-		font-size: 1.15em;
+		width: 50%;
+		padding: 1em;
+		.navbar-items{
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items:center;
+			width: 70%;
+			font-size: 1.15em;
+		}
 	}
 	.item {
 		color: #FFFFFF;
@@ -89,7 +112,7 @@ nav {
 		justify-content: flex-end;
 		align-items: center;
 		.user{
-			width: 13%;
+			width: 25%;
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
@@ -100,6 +123,16 @@ nav {
 				color: #FFFFFF;
 				font-weight: bold;
 			}
+		}
+		.option {
+			a {
+				width: 100%;
+				text-decoration: none;
+				color: #FFF;
+			}
+			width: 30%;
+			display: flex;
+			justify-content: space-between;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-	<aside class="menu">
+	<aside v-if="isAuthenticated" class="menu">
 		<ul class="menu-list">
 			<li v-for="game in games" :key="game.name">
 				<router-link :to="`/game/${game.slug}`">
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	export default {
 		name: 'menu',
 		data(){
@@ -34,6 +35,11 @@
 					},
 				]
 			}
+		},
+		computed: {
+			...mapGetters([
+				'isAuthenticated'
+      ])
 		}
 	}
 </script>
