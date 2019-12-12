@@ -16,11 +16,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    redirect: '/game/game-1',
-    beforeEnter: ifAuthenticated
-  },
-  {
     path: '/game/:name',
     name: 'game-container',
     component: GameContainer,
@@ -43,6 +38,11 @@ const routes = [
     path: '/news',
     name: 'news-container',
     component: NewsContainer,
+    beforeEnter: ifAuthenticated
+  },
+  {
+    path: '/',
+    redirect: '/game/game-1',
     beforeEnter: ifAuthenticated
   },
   {
