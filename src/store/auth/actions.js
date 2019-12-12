@@ -6,41 +6,44 @@ const actions = {
 	[AUTH_REQUEST]: ({commit, dispatch}, user) => {
 		return new Promise((resolve, reject) => {
 			commit(AUTH_REQUEST)
-			firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-			.then(res => {
-				const { displayName, photoURL, email, refreshToken } = res.user 
+			firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+			.then(() => {
+				firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+				.then(res => {
+					const { displayName, photoURL, email, refreshToken } = res.user 
+					sessionStorage.setItem(process.env.VUE_APP_FIREBASE_API_KEY, { displayName, photoURL, email, refreshToken })
+					commit(AUTH_SUCCESS, { displayName, photoURL, email, refreshToken })
 
-				localStorage.setItem('user', JSON.stringify({displayName, photoURL, email, refreshToken}))
-				commit(AUTH_SUCCESS, { displayName, photoURL, email, refreshToken })
-
-				dispatch(USER_REQUEST)
-				resolve(res)
+					dispatch(USER_REQUEST)
+					resolve(res)
+				})
+				.catch(err => {
+					commit(AUTH_ERROR, err)
+					sessionStorage.removeItem(process.env.VUE_APP_FIREBASE_API_KEY)
+					reject(err)
+				})
 			})
-			.catch(err => {
-				commit(AUTH_ERROR, err)
-				localStorage.removeItem('user-token')
-				reject(err)
-			})
+			.catch(err => reject(err));
 		})
 	},
 	[AUTH_LOGOUT]: ({commit}) => {
 		return new Promise((resolve) => {
 			commit(AUTH_LOGOUT)
-			localStorage.removeItem('user') 
+			sessionStorage.removeItem(process.env.VUE_APP_FIREBASE_API_KEY) 
 			resolve()
 		})
 	},
-	[AUTH_CHECK]: ({commit, dispatch}) => {
-		return new Promise((resolve) => {
-			if(firebase.auth().currentUser){
-				const { displayName, photoURL, email, refreshToken } = firebase.auth().currentUser
-
-				localStorage.setItem('user', JSON.stringify({displayName, photoURL, email, refreshToken}))
-				commit(AUTH_SUCCESS, {displayName, photoURL, email, refreshToken })
-				resolve()
-			}else{
-				dispatch(AUTH_LOGOUT);
-			}
+	[AUTH_CHECK]: ({commit}) => {
+		return new Promise((resolve, reject) => {
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					commit(AUTH_SUCCESS, user)
+					resolve(user);
+				}
+				else {
+					reject();
+				}
+			})
 		})
 	}
 }
