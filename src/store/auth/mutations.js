@@ -2,7 +2,7 @@ import { AUTH_REQUEST, AUTH_ERROR, AUTH_SUCCESS, AUTH_LOGOUT } from '../actions/
 
 const mutations = {
 	[AUTH_REQUEST]: (state) => {
-		state.state = 'loading'
+		state.status = 'loading'
 	},
 
 	[AUTH_SUCCESS]: (state, user) => {
