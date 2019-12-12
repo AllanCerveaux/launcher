@@ -10,8 +10,7 @@ const actions = {
 			.then(() => {
 				firebase.auth().signInWithEmailAndPassword(user.email, user.password)
 				.then(res => {
-					const { displayName, photoURL, email, refreshToken } = res.user 
-					sessionStorage.setItem(process.env.VUE_APP_FIREBASE_API_KEY, { displayName, photoURL, email, refreshToken })
+					const { displayName, photoURL, email, refreshToken } = res.user
 					commit(AUTH_SUCCESS, { displayName, photoURL, email, refreshToken })
 
 					dispatch(USER_REQUEST)
@@ -27,9 +26,11 @@ const actions = {
 		})
 	},
 	[AUTH_LOGOUT]: ({commit}) => {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			commit(AUTH_LOGOUT)
-			sessionStorage.removeItem(process.env.VUE_APP_FIREBASE_API_KEY) 
+			firebase.auth().signOut()
+				.then(() => sessionStorage.removeItem(process.env.VUE_APP_FIREBASE_API_KEY))
+				.catch(err => (commit(AUTH_ERROR, err), reject(err)))
 			resolve()
 		})
 	},
