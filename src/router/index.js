@@ -1,23 +1,55 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+// Middleware
+import { ifAuthenticated, ifNotAuthenticated } from './middleware'
+
+// Views
+import GameContainer from '../views/GameContainer.vue'
+import ChatContainer from '../views/ChatContainer.vue'
+import NewsContainer from '../views/NewsContainer.vue'
+
+// Components
+import Login from '../components/Auth/Login.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+{
+  path: '/',
+  redirect: '/game/game-1',
+  beforeEnter: ifAuthenticated
+},
+{
+  path: '/game',
+  redirect: '/game/game-1',
+  beforeEnter: ifAuthenticated
+},
+{
+  path:'/login',
+  name: 'login',
+  component: Login,
+  beforeEnter: ifNotAuthenticated
+},
+{
+  path: '/game/:name',
+  name: 'game-container',
+  component: GameContainer,
+  props: (route) => ({name: route.params.name || 'game-1'}),
+  beforeEnter: ifAuthenticated
+},
+{
+  path: '/chat',
+  name: 'chat-container',
+  component: ChatContainer,
+  beforeEnter: ifAuthenticated
+},
+{
+  path: '/news',
+  name: 'news-container',
+  component: NewsContainer,
+  beforeEnter: ifAuthenticated
+},
 ]
 
 const router = new VueRouter({
