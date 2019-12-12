@@ -1,5 +1,5 @@
 const state = {
-	user: JSON.parse(localStorage.getItem('user')) || '',
+	user: JSON.parse(sessionStorage.getItem(process.env.VUE_APP_FIREBASE_SESSION_ITEM)) || '',
 	status: ''
 }
 
