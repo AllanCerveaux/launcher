@@ -1,4 +1,4 @@
-# ankama-launcher
+# Launcher
 
 ## Project setup
 ```
