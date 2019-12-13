@@ -37,16 +37,6 @@ body{
   grid-template-rows: 1fr repeat(4, 2fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px; 
-  .navbar{
-    grid-area: 1 / 1 / 2 / 6;
-    background-color: #455A64;
-    display: flex;
-    align-items: center;
-
-  }
-  .menu{
-    grid-area: 2 / 1 / 6 / 2;
-  }
   .wrapper{
     grid-area: 2 / 2 / 6 / 6;
   }

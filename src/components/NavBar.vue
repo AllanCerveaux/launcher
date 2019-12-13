@@ -44,6 +44,12 @@
 </script>
 
 <style lang="scss" scoped>
+.navbar {
+	grid-area: 1 / 1 / 2 / 6;
+	background-color: #455A64;
+	display: flex;
+	align-items: center;
+}
 nav {
 	display: flex;
 	width: 100%;

@@ -47,8 +47,9 @@
 <style lang="scss" scoped="">
 .menu {
 	background-color: rgba(33, 33, 33, 0.6);
-	z-index:0;
+  grid-area: 2 / 1 / 6 / 2;	
 	position: relative;
+	z-index:0;
 }
 .menu-list{
 	padding: 0 1em;
