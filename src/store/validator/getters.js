@@ -2,7 +2,7 @@ const getters = {
 	isValidate: state => {
 		return state.valid
 	},
-	isError: state => {
+	isValidatorError: state => {
 		return state.error
 	}
 }
