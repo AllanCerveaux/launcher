@@ -12,16 +12,16 @@
 					<input class="input" type="password" v-model="password">
 				</div>
 				<div class="form-field">
-					<button>Send</button>
+					<button :disabled="disabledButton">SIGN IN</button>
 				</div>
 			</form>
 			<h2>Or <router-link to="#">Register</router-link></h2>
 		</div>
 		<hr>
-		<div class="login-social">
+		<div class="login-anonymous">
 			<h3>Or Not ! Go to <router-link to="#">Guest</router-link> </h3>
 			<p>I do not need to know who you are...</p>
-			<p>I just want you to have fun!</p>
+			<p>Just have fun!</p>
 		</div>
 	</section>
 </template>
@@ -36,7 +36,7 @@
 		data(){
 			return {
 				email:'admin@admin.com',
-				password:'password',
+				password:'wrong',
 				error: null
 			}
 		},
@@ -70,6 +70,9 @@
 				'isValidate',
 				'isError'
 			]),
+			disabledButton(){
+				return this.password.length < 1;
+			}
 		}
 	}
 </script>
@@ -77,11 +80,14 @@
 <style lang="scss" scoped>
 .auth-wrapper {
 	color:#FFF;
-	background-color: rgba(33,33,33, .6);
+	width:100%;
+	margin-left: 30%;
+	padding: 1em 0;
 	display: flex;
 	flex-direction: column;
-	padding: 2em 2em 1.8em 2em;
-	margin-left: 30%;
+	align-items: center;
+	grid-area: 2 / 2 / 6 / 3;
+	background-color: rgba(33,33,33, .6);
 	a {
 		color: #FF5722;
 		&:hover{
@@ -90,15 +96,65 @@
 	}
 	hr {
 		height: .1em;
-		width: 100%;
+		width: 80%;
 		background-color: #DEDEDE;
 		border: none;
 	}
 }
-.login {
-	flex: 1;
+.login, .login-anonymous {
+	width: 80%;
 }
-.login-social {
-	flex: 1;
+.login {
+	.login-form {
+		display: flex;
+		flex-direction: column;
+		.form-field{
+			display: flex;
+			flex-direction: column;
+			margin-bottom: 5%;
+			&>label{
+				margin-bottom: 5%;
+				font-weight: bold;
+			}
+			&>input{
+				color:#FFF;
+				background-color: #212121;
+				padding: .5em;
+				border-radius: 5px;
+				border: 1px rgba(33,33,33, .5) solid;
+				&:hover{
+					border-color:#FFF;
+				}
+				&:focus{
+					border-color: #FF5722;
+				}
+			}
+			&>button{
+				border: 1px rgba(33,33,33,.5) solid;
+				background-color: #FF5722;
+				border-radius: 5px;
+				font-weight: bold;
+				font-size: 1em;
+				margin: 0 auto;
+				padding: 1em;
+				width: 70%;
+				color:#FFF;
+				&:disabled{
+					background-color: rgba(33,33,33,.5);
+					color:rgba(243,243,243,.5);
+				}
+
+				&:active{
+					color: rgba(255,255,255,.5);
+					background-color: #E64A19;
+				}
+			}
+		}
+	}
+}
+.error{
+	border-color: #D32F2F;
+}
+.login-anonymous {
 }
 </style>
