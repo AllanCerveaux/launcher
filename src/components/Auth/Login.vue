@@ -5,15 +5,16 @@
 			<form @submit="sendLogin" class="login-form">
 				<div class="form-field">
 					<label class="field" for="">Email</label>
-					<input class="input" type="email" v-model="email" placeholder="john@doe.com">
+					<input class="" :class="error.code === 'auth/user-not-found' ? 'error input' : 'input' " type="email" v-model="email" placeholder="john@doe.com">
 				</div>
 				<div class="form-field">
 					<label class="field" for="">Password</label>
-					<input class="input" type="password" v-model="password">
+					<input :class="error.code === 'auth/wrong-password' ? 'error input' : 'input'" type="password" v-model="password">
 				</div>
 				<div class="form-field">
 					<button :disabled="disabledButton">SIGN IN</button>
 				</div>
+				<span v-if="error" class="error-message">{{error.message}}</span>
 			</form>
 			<h2>Or <router-link to="#">Register</router-link></h2>
 		</div>
@@ -36,8 +37,8 @@
 		data(){
 			return {
 				email:'admin@admin.com',
-				password:'wrong',
-				error: null
+				password:'password',
+				error: false
 			}
 		},
 		methods: {
@@ -47,28 +48,31 @@
 			]),
 			sendLogin(e){
 				e.preventDefault();
-				const { email, password } = this;
+				const { email, password } = this
 				this.VALIDATOR_SIGNIN({ email, password })
 				.then(() => {
 					if(this.isValidate){
 						this.AUTH_REQUEST({email, password})
 						.then(() => {
-							this.$router.push('/');
+							this.$router.push('/')
 						})
-						.catch(err => {
-							console.log(err.message);
+						.catch((err) => {
+							const { code, message } = err
+							this.error = {...this.authStatus, code, message}
 						})
 					}else {
-						const {name, message} = this.isError;
-						this.error = {name, message};
+						const {name, message} = this.isError
+						this.error = {name, message}
 					}
 				})
 			}
 		},
 		computed: {
 			...mapGetters([
+        'authStatus',
+        'isAuthError',
 				'isValidate',
-				'isError'
+				'isValidatorError'
 			]),
 			disabledButton(){
 				return this.password.length < 1;
@@ -117,6 +121,9 @@
 				font-weight: bold;
 			}
 			&>input{
+				&.error {
+					border-color: #D32F2F;
+				} 
 				color:#FFF;
 				background-color: #212121;
 				padding: .5em;
@@ -152,8 +159,12 @@
 		}
 	}
 }
-.error{
-	border-color: #D32F2F;
+.error-message{
+	background-color: #D32F2F;
+	margin-bottom: .5em;
+	border-radius: 5px;
+	padding: .5em;
+	border: 1 rgba(33,33,33,.5) solid;
 }
 .login-anonymous {
 }
