@@ -11,8 +11,4 @@ export default{
 </script>
 
 <style lang="scss" scoped>
-	.news-wrapper {
-		padding: 1em;
-		color:#FFF;
-	}
 </style>
