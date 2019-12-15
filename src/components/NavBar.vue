@@ -109,6 +109,9 @@
 			}
 			&.router-link-active{
 				color: $color-text-icon;
+				&:hover{
+					background-color: transparent;
+				}
 				hr {
 					width: ms(1);
 					background-color: $accent-color;
