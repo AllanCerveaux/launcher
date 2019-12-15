@@ -1,20 +1,39 @@
 <template>
   <div class="app">
     <NavBar/>
-    <Menu/>
-    <router-view/>
+    <Menu />
+    <div @click="hideSidenav" class="wrapper">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
+  import { TOGGLE_SIDENAV } from '@/store/actions/animations'
+  import { mapGetters } from 'vuex'
+
   import NavBar from '@/components/NavBar.vue'
   import Menu from '@/components/Menu.vue'
+
 
   export default {
     name: 'app',
     components: {
       NavBar,
       Menu
+    },
+    methods: {
+      hideSidenav(){
+        if(this.isOpen){
+          return this.$store.dispatch(TOGGLE_SIDENAV)
+        }
+        return
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'isOpen'
+      ])
     }
   }
 </script>
@@ -31,5 +50,8 @@
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     font-family: $fonts;
+  }
+  .wrapper {
+    grid-area: 2 / 2 / 6 / 6;
   }
 </style>
