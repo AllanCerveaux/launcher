@@ -45,4 +45,72 @@
 </script>
 
 <style lang="scss" scoped="">
+@import '../assets/modules/variables.scss';
+
+span{
+	z-index: 1;
+	display: none;
+	position: absolute;
+	background-color: $dark-primary-color;
+	border-radius: ms(-3);
+	padding: ms(1) ms(-3) ms(1) ms(1);
+	left: ms(1);
+}
+
+.menu {
+	z-index: 0;
+	grid-area: 2 / 1 / 6 / 2; 
+	background-color: rgba($light-primary-color, .5);
+}
+
+.menu-list{
+	height: 70%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+li{
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+a{
+	border-radius: ms(-3);
+	padding: ms(-2);
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $color-text-icon;
+	text-decoration: none;
+	&:hover{
+		background-color: $dark-primary-color;
+		span{
+			display: block;
+			z-index: 1;
+			animation: slide .14s forwards;
+			@keyframes slide{
+				100%{
+					left: ms(3);
+				}
+			}
+		}
+	}
+	&.router-link-active {
+		padding: ms(-2);
+		background-color: darken($light-primary-color, 10%);
+		border-radius: ms(-3);
+		&>span{
+			display: none;
+		}
+	}
+	&>img{
+		z-index: 4;
+	}
+}
 </style>
