@@ -130,9 +130,14 @@
 		display: flex;
 		align-items: center;
 		color: $color-text-icon;
+		padding: ms(-3);
 		&>img{
 			width: ms(2);
 			margin-left: ms(-1);
+		}
+		&:hover {
+			background-color: lighten($dark-primary-color, 10%);
+			border-radius: ms(-4);
 		}
 	}
 	.sidenav-out{
