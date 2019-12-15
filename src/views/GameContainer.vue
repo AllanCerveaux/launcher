@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper">
+  <section>
     <Game :name="name"/>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -14,10 +14,14 @@ export default {
     Game
   },
   props: {
-		name: {
+    name: {
       type: String,
       required: true,
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
