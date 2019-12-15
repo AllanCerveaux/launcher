@@ -1,27 +1,37 @@
 <template>
-	<section class="navbar">
-		<nav>
-			<div class="navbar-left">
-				<img class="navbar-brand" src="https://picsum.photos/50" alt="">
-				<div v-if="isAuthenticated" class="navbar-items">
-					<router-link class="item" to="/game">GAMES<hr/></router-link>
-					<router-link class="item" to="/news">NEWS <hr/></router-link>
-					<router-link class="item" to="/chat">CHAT <hr/></router-link>
-				</div>
+	<nav class="navbar">
+		<div @click="isOpen = false" class="navbar-left">
+			<img class="navbar-brand" src="https://picsum.photos/50" alt="">
+			<div v-if="isAuthenticated" class="navbar-items">
+				<router-link to="/game">GAMES<hr/></router-link>
+				<router-link to="/news">NEWS <hr/></router-link>
+				<router-link to="/chat">CHAT <hr/></router-link>
 			</div>
-			<div class="navbar-right">
-				<div v-if="isAuthenticated" class="user">
-					<span class="username">Callan</span>
-					<img src="https://picsum.photos/35" alt="">
-					<button @click="logout">logout</button>
+		</div>
+		<div class="navbar-right">
+			<div v-if="isAuthenticated" @click="isOpen = !isOpen" class="sidenav">
+				<div class="sidenav-trigger">
+					<span>{{isAuthenticated.displayName}}</span>
+					<img :src="isAuthenticated.photoURL" alt="">
 				</div>
-				<div v-else class="option">
-					<a href="#">Settings</a>
-					<a href="#">Report bug</a>
-				</div>
+				<div v-if="isOpen" class="sidenav-out">
+					<div class="sidenav-user">
+						<img :src="isAuthenticated.photoURL" alt="">
+						<span>{{isAuthenticated.displayName}}</span>
+					</div>
+					<div class="sidenav-content">
+						<a class="sidenav-item" @click="logout">logout</a>
+						<a class="sidenav-item" href="#">Settings</a>
+						<a class="sidenav-item" href="#">Report bug</a>
+					</div>
+				</div>	
 			</div>
-		</nav>
-	</section>
+			<div v-else class="option">
+				<a href="#">Settings</a>
+				<a href="#">Report bug</a>
+			</div>
+		</div>
+	</nav>
 </template>
 
 <script>
@@ -29,6 +39,11 @@
 	import { AUTH_LOGOUT } from '@/store/actions/auth'
 
 	export default {
+		data(){
+			return {
+				isOpen: false
+			}
+		},
 		methods: {
 			logout(){ 
 				return this.$store.dispatch(AUTH_LOGOUT)
@@ -44,102 +59,128 @@
 </script>
 
 <style lang="scss" scoped>
-.navbar {
-	grid-area: 1 / 1 / 2 / 6;
-	background-color: #455A64;
-	display: flex;
-	align-items: center;
-}
-nav {
-	display: flex;
-	width: 100%;
-	.navbar-left{
-		display: flex;
-		width: 50%;
-		padding: 1em;
-		.navbar-items{
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: space-around;
-			align-items:center;
-			width: 70%;
-			font-size: 1.15em;
-		}
-	}
-	.item {
-		color: #FFFFFF;
-		text-decoration: none;
-	}
-	hr {
-		height: .3em;
-		border:none;
-		border-radius: 10%;
-		background-color: transparent;
+	@import '../assets/modules/variables.scss';
+	
+	hr{
+		background-color: $light-primary-color;
+		border-radius: ms(-6);
+		height: ms(-3);
+		border: none;
 		padding: 0;
-		margin: 0;
-		transition: width .15s ease;
+		margin: 0 auto;
+		transition: width .14s ease;
 		width: 0;
 	}
-	img.navbar-brand {
-		padding: 0 .3em;		
+
+	a{
+		text-decoration: none;
+		color: rgba($color-text-icon, .7);
 	}
-	a {
+
+	.navbar{
+		grid-area: 1 / 1 / 2 / 6;
+		background-color: $dark-primary-color;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: ms(0);
+	}
+	
+	.navbar-left{
+		display: flex;
+		flex: 1;
+		align-items: center;
+	}
+
+	.navbar-items{
+		width: ms(8);
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		a{
+			text-align: center;
+			padding: ms(0);
+			&:hover{
+				background-color: lighten($dark-primary-color, 10%);
+				border-radius: ms(-4);
+				hr{
+					width: ms(1);
+				}
+			}
+			&.router-link-active{
+				color: $color-text-icon;
+				hr {
+					width: ms(1);
+					background-color: $accent-color;
+				}
+			}
+		}
+	}
+
+	.sidenav {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: .5em 0;
-		width: 20%;
-		opacity: .5;
-		&:hover{
-			opacity: 1;
-			border-radius: 5%;
-			background-color: rgba(255,255,255, 0.3);
-			hr{
-				display: block;
-				background-color: #fff;
-				width: 30%;
-			}
-		}
-		&.router-link-active {
-			opacity: 1;
-			background-color: transparent;
-			hr {
-				display: block;
-				background-color: #536DFE;
-				width: 30%;
-			}
-		}
+		cursor: pointer;
 	}
-	.navbar-right{
-		flex: 1 0 10%;
+	
+	.sidenav-trigger {
 		display: flex;
-		justify-content: flex-end;
 		align-items: center;
-		.user{
-			width: 25%;
-			display: flex;
-			align-items: center;
-			justify-content: space-around;
-			img{
-				border-radius: 100%;
-			}
-			.username {
-				color: #FFFFFF;
-				font-weight: bold;
-			}
-		}
-		.option {
-			a {
-				width: 100%;
-				text-decoration: none;
-				color: #FFF;
-			}
-			width: 30%;
-			display: flex;
-			justify-content: space-between;
+		color: $color-text-icon;
+		&>img{
+			width: ms(2);
+			margin-left: ms(-1);
 		}
 	}
-}
+	.sidenav-out{
+		position: absolute;
+		top:0;
+		right: 0;
+		width: ms(7);
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		color: $color-text-icon;
+		box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+		animation: slidein .1s alternate;
+		.sidenav-user{
+			background-color: darken($dark-primary-color, 10%);
+			padding: ms(0) ;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			&>span {
+				font-size: ms(2);
+				font-weight: bold;
+				margin: ms(-2) 0;
+			}
+			&>img{
+				width: ms(5); 	
+			}
+			@keyframes slidein{
+				from {
+					transform: translateX(ms(7));
+				}
+				to {
+					transform: transformX(0);
+				}
+			}
+		}
+		.sidenav-content {
+			flex: 1;
+			background-color: $primary-color;
+			text-align: center;
+			&>a{
+				display: inline-block;
+				width: 100%;
+				padding: ms(1) 0;
+				font-style: ms(1);
+				&:hover{
+					background-color: $light-primary-color;
+					color: $primary-text;
+				}
+			}
+		}
+	}
 </style>
