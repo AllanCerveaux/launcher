@@ -26,7 +26,7 @@
   .app{
     height: 100vh;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: .3fr repeat(4, 1fr);
     grid-template-rows: .5fr repeat(4, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
