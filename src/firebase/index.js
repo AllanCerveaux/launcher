@@ -16,6 +16,6 @@ export const firebaseConfig = {
     appId: process.env.VUE_APP_FIREBASE_APP_ID,
 };
 // Initialize Firebase
-export const db = firebase
+export const db = () => firebase
 	.initializeApp(firebaseConfig)
 	.firestore()

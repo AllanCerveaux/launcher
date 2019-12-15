@@ -8,7 +8,7 @@ import { db } from './firebase'
 import router from './router'
 import store from './store'
 
-db
+db();
 
 
 
