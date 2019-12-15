@@ -7,6 +7,7 @@
 </template>
 
 <script>
+
 	export default {
 		name:'game',
 		props: {
@@ -50,4 +51,5 @@
 </script>
 
 <style lang="scss" scoped="">
+
 </style>
