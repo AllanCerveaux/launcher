@@ -1,5 +1,5 @@
 <template>
-	<aside v-if="isAuthenticated" class="menu">
+	<aside @click="hideSidenav" v-if="isAuthenticated" class="menu">
 		<ul class="menu-list">
 			<li v-for="game in games" :key="game.name">
 				<router-link :to="`/game/${game.slug}`">
@@ -12,7 +12,9 @@
 </template>
 
 <script>
+	import { TOGGLE_SIDENAV } from '@/store/actions/animations'
 	import { mapGetters } from 'vuex'
+
 	export default {
 		name: 'menu',
 		data(){
@@ -36,9 +38,18 @@
 				]
 			}
 		},
+		methods: {
+			hideSidenav(){
+        if(this.isOpen){
+          return this.$store.dispatch(TOGGLE_SIDENAV)
+        }
+        return
+      }
+		},
 		computed: {
 			...mapGetters([
-				'isAuthenticated'
+				'isAuthenticated',
+				'isOpen'
       ])
 		}
 	}
