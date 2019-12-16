@@ -51,5 +51,9 @@
 </script>
 
 <style lang="scss" scoped="">
-
+	.game {
+		height: inherit;
+		display: flex;
+		justify-content: flex-end;
+	}
 </style>

@@ -1,7 +1,5 @@
 <template>
-  <section>
-    <Game :name="name"/>
-  </section>
+  <Game :name="name"/>
 </template>
 
 <script>
