@@ -50,6 +50,8 @@
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     font-family: $fonts;
+    background-image: url(https://picsum.photos/1280/720);
+    background-size: cover;
   }
   .wrapper {
     grid-area: 2 / 2 / 6 / 6;
